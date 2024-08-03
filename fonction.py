@@ -3,44 +3,12 @@ import random
 from classe import Missile
 import sys
 
-
-def afficher_ecran_depart(fenetre, largeur_fenetre, hauteur_fenetre):
-    # Définir les couleurs
-    blanc = (255, 255, 255)
-    noir = (0, 0, 0)
-    
-    # Définir la police
-    police_titre = pygame.font.Font(None, 74)
-    police_instructions = pygame.font.Font(None, 36)
-    
-    # Créer le message de titre
-    texte_titre = police_titre.render("Attack d'Aliens", True, blanc)
-    texte_titre_rect = texte_titre.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2 - 50))
-    
-    # Créer le message d'instructions
-    texte_instructions = police_instructions.render("Appuyez sur une touche pour commencer", True, blanc)
-    texte_instructions_rect = texte_instructions.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2 + 50))
-    
-    # Remplir l'écran de noir
-    fenetre.fill(noir)
-    
-    # Dessiner le message de titre et d'instructions
-    fenetre.blit(texte_titre, texte_titre_rect)
-    fenetre.blit(texte_instructions, texte_instructions_rect)
-    
-    # Mettre à jour l'affichage
-    pygame.display.flip()
-    
-    # Attendre que l'utilisateur appuie sur une touche ou ferme la fenêtre
-    attendre_commencer()
-
-
 def attendre_commencer(fenetre, largeur_fenetre, hauteur_fenetre, son, manette=None):
     blanc = (255, 255, 255)
     noir = (0, 0, 0)
     police = pygame.font.Font(None, 74)
     texte = police.render("Appuyez sur A pour commencer", True, blanc)
-    rect_texte = texte.get_rect(center=(largeur_fenetre / 2, hauteur_fenetre / 2))
+    rect_texte = texte.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2))
     
     attendre = True
 
@@ -63,6 +31,7 @@ def attendre_commencer(fenetre, largeur_fenetre, hauteur_fenetre, son, manette=N
                 pygame.display.flip()
 
         pygame.time.delay(100)  # Petite pause pour éviter l'utilisation excessive du CPU
+        
 
         
 
@@ -82,11 +51,13 @@ def afficher_game_over(fenetre, largeur_fenetre, hauteur_fenetre, point):
     # Définir la police
     police = pygame.font.Font(None, 74)
     police2 = pygame.font.Font(None, 25)
+
     # Créer le message de game over
     texte = police.render("GAME OVER", True, blanc)
     texte_2 = police2.render(f"Score final: {point} points", True, blanc)
     texte_rect = texte.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2))
     texte_rect2 = texte_2.get_rect(center=(largeur_fenetre //2 , hauteur_fenetre - 200))
+
     # Remplir l'écran de noir
     fenetre.fill(noir)
     
