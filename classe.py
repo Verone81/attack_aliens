@@ -2,17 +2,38 @@ import pygame
 import math
 
 class Missile:
-    def __init__(self, x, y, vitesse_x, vitesse_y):
+    def __init__(self, x, y, vitesse_x, vitesse_y, niveau):
+        """
+        Initialise un missile.
+
+        Args:
+            x (int): Position initiale en x.
+            y (int): Position initiale en y.
+            vitesse_x (float): Vitesse du missile en x.
+            vitesse_y (float): Vitesse du missile en y.
+            niveau (int): Niveau du missile (1, 2 ou 3).
+        """
         self.x = x
         self.y = y
         self.vitesse_x = vitesse_x
         self.vitesse_y = vitesse_y
-        self.width = 5
-        self.height = 5
-        self.color = (255, 0, 0)  # Rouge
         self.trail = []
 
+        # Charger l'image du missile en fonction du niveau
+        if niveau == 1:
+            self.image = pygame.image.load('images/missile.png')
+        elif niveau == 2:
+            self.image = pygame.image.load('images/missile_niveau_2.png')
+        elif niveau == 3:
+            self.image = pygame.image.load('images/missile_niveau_3.png')
+        else:
+            raise ValueError("Niveau de missile invalide")
+
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+
     def update(self):
+        """Met à jour la position du missile."""
         self.x += self.vitesse_x
         self.y += self.vitesse_y
         self.trail.append((self.x, self.y))
@@ -20,22 +41,37 @@ class Missile:
             self.trail.pop(0)
 
     def draw(self, screen):
-        for pos in self.trail:
-            pygame.draw.rect(screen, self.color, (pos[0], pos[1], self.width, self.height))
+        """Dessine le missile sur l'écran."""
+        screen.blit(self.image, (self.x, self.y))
 
     def is_out_of_bounds(self, hauteur_fenetre):
-        # Vérifier si le missile dépasse le bas de l'écran
+        """
+        Vérifie si le missile dépasse le bas de l'écran.
+
+        Args:
+            hauteur_fenetre (int): Hauteur de la fenêtre.
+
+        Returns:
+            bool: True si le missile est hors de l'écran, False sinon.
+        """
         return self.y > hauteur_fenetre
 
-
     def collide_with(self, other=None):
-        # Vérifier les collisions avec un autre objet
+        """
+        Vérifie les collisions avec un autre objet.
+
+        Args:
+            other (optional): L'autre objet avec lequel vérifier la collision.
+
+        Returns:
+            bool: True s'il y a une collision, False sinon.
+        """
         if other:
             return pygame.Rect(self.x, self.y, self.width, self.height).colliderect(
                 pygame.Rect(other.x, other.y, other.width, other.height)
             )
-        
         return False
+
 
 
 

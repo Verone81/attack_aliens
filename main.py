@@ -19,8 +19,14 @@ projectiles = []
 # Initialisation du canon
 canon = Canon(fenetre_largeur, fenetre_hauteur)
 
+niveau_missile = 1
+
+depart = True
+
 # Initialisation de Pygame
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.set_num_channels(3)
 
 # Initialisation de la manette
 pygame.joystick.init()
@@ -34,8 +40,20 @@ else:
 fenetre = pygame.display.set_mode((fenetre_largeur, fenetre_hauteur))
 pygame.display.set_caption("Attack d'Aliens")
 
+son_bouton_a = pygame.mixer.Sound("audio/click.mp3")
+son_tire = pygame.mixer.Sound("audio/tire.mp3")
+son_explosion = pygame.mixer.Sound("audio/explosion.mp3")
+son_musique = pygame.mixer.music.load('audio/musique.mp3')
+son_game_over = pygame.mixer.Sound("audio/game-over.mp3")
+
+pygame.mixer.music.play(-1)  # -1 pour jouer en boucle
+
+canal_tir = pygame.mixer.Channel(0)  # Canal 0 pour le son de tir
+canal_explosion = pygame.mixer.Channel(1)  # Canal 1 pour le son d'explosion
+canal_game_over = pygame.mixer.Channel(2)
 # Afficher l'écran de départ et attendre le début du jeu
-attendre_commencer(fenetre, fenetre_largeur, fenetre_hauteur, manette)
+attendre_commencer(fenetre, fenetre_largeur, fenetre_hauteur, son_bouton_a, manette)
+
 
 # Événement personnalisé pour générer des missiles ennemis
 GENERATE_MISSILE_EVENT = pygame.USEREVENT + 1
@@ -50,6 +68,8 @@ essais = 5
 # Score initial
 score = 0
 
+attendre = True
+
 # Boucle principale
 while True:
     for event in pygame.event.get():
@@ -57,13 +77,9 @@ while True:
             pygame.quit()
             sys.exit()
         elif event.type == GENERATE_MISSILE_EVENT:
-            missile = generer_missile(fenetre_largeur)
+            missile = generer_missile(fenetre_largeur, niveau_missile)
             missiles.append(missile)
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                projectile = canon.tirer()
-                if projectile:
-                    projectiles.append(projectile)
+       
 
     # Gestion des entrées de la manette
     if manette:
@@ -77,15 +93,10 @@ while True:
         if boutons[0]:  # Bouton A pour tirer
             projectile = canon.tirer()
             if projectile:
+                canal_tir.play(son_tire)
                 projectiles.append(projectile)
-    else:
-        # Vérifier les touches enfoncées pour le mouvement continu du canon
-        touches = pygame.key.get_pressed()
-        if touches[pygame.K_LEFT]:
-            canon.pivoter_gauche()
-        if touches[pygame.K_RIGHT]:
-            canon.pivoter_droite()
 
+    
     # Remplir l'écran de noir
     fenetre.fill(noir)
 
@@ -93,10 +104,13 @@ while True:
     for missile in missiles[:]:
         missile.update()
         if missile.is_out_of_bounds(fenetre_hauteur):
+            canal_explosion.play(son_explosion)
             missiles.remove(missile)
             essais -= 1
             if essais <= 0:
-                afficher_game_over(fenetre, fenetre_largeur, fenetre_hauteur)  # Afficher l'écran de game over
+                pygame.mixer.music.stop()
+                canal_game_over.play(son_game_over)
+                afficher_game_over(fenetre, fenetre_largeur, fenetre_hauteur, score)  # Afficher l'écran de game over
 
     # Mettre à jour et dessiner les projectiles du canon
     for projectile in projectiles[:]:
@@ -109,10 +123,17 @@ while True:
     for projectile in projectiles[:]:
         for missile in missiles[:]:
             if projectile.collide_with(missile):
+                canal_explosion.play(son_explosion)
                 missiles.remove(missile)
                 projectiles.remove(projectile)
                 score += 1  # Incrémenter le score lorsqu'un missile est détruit
                 break
+    if score >= 10 and score < 20:
+        niveau_missile = 2
+    elif score >= 20 and score < 30:
+        niveau_missile = 3
+    elif score >= 30:
+        gagner(fenetre, score, fenetre_largeur, fenetre_hauteur)
 
     # Vérifier les collisions entre les missiles ennemis et le canon
     for missile in missiles[:]:
@@ -120,6 +141,8 @@ while True:
             essais -= 1
             missiles.remove(missile)
             if essais <= 0:
+                pygame.mixer.music.stop()
+                canal_game_over.play(son_game_over)
                 afficher_game_over(fenetre, fenetre_largeur, fenetre_hauteur)  # Afficher l'écran de game over
 
     # Dessiner les missiles ennemis et les projectiles du canon
@@ -140,3 +163,4 @@ while True:
 
     # Mettre à jour l'affichage
     pygame.display.flip()
+0
