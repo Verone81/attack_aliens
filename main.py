@@ -93,7 +93,8 @@ while True:
             if projectile:
                 canal_tir.play(son_tire)
                 projectiles.append(projectile)
-
+        if boutons[1]: # bouton B
+            print("c'est le bouton 1")
     # Remplir l'écran de noir
     fenetre.fill(noir)
 

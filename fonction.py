@@ -3,6 +3,7 @@ import random
 from classe import Missile
 import sys
 
+
 def attendre_commencer(fenetre, largeur_fenetre, hauteur_fenetre, son, manette=None):
     blanc = (255, 255, 255)
     noir = (0, 0, 0)
@@ -32,9 +33,6 @@ def attendre_commencer(fenetre, largeur_fenetre, hauteur_fenetre, son, manette=N
 
         pygame.time.delay(100)  # Petite pause pour éviter l'utilisation excessive du CPU
         
-
-        
-
 
 def afficher_score(fenetre, score):
     blanc = (255, 255, 255)
@@ -106,17 +104,20 @@ def gagner(fenetre, point, largeur_fenetre, hauteur_fenetre):
     
     # Définir la police
     police = pygame.font.Font(None, 74)
-    
+    police2 = pygame.font.Font(None, 25)
+
     # Créer le message de game over
-    texte = police.render(f"Vous gagnez!\n  Avec un score de {point} points\n pressez A pour quiter", True, blanc)
+    texte = police.render("Vous gagnez!", True, blanc)
+    texte2 = police2.render(f"Vous avez un score de {point} points", True, blanc)
     texte_rect = texte.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2))
+    texte_rect2 = texte2.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre - 200))
     
     # Remplir l'écran de noir
     fenetre.fill(noir)
     
     # Dessiner le message de game over
     fenetre.blit(texte, texte_rect)
-    
+    fenetre.blit(texte2, texte_rect2)
     # Mettre à jour l'affichage
     pygame.display.flip()
     
