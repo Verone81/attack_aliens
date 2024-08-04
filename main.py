@@ -46,6 +46,8 @@ else:
 fenetre = pygame.display.set_mode((fenetre_largeur, fenetre_hauteur))
 pygame.display.set_caption("Attack d'Aliens")
 
+# initiliser l'image du fond
+image_fond = pygame.image.load('images/fond.jpeg')
 
 #  Initialisation du son
 son_bouton_a = pygame.mixer.Sound("audio/click.mp3")
@@ -165,6 +167,9 @@ while True:
     if niveau_missile != niveau_avant:
         son_level.play(maxtime=1000)
         niveau_avant += 1
+    
+    # dessiner l<image de fond
+    fenetre.blit(image_fond, (0, 0))
 
     # Dessiner les missiles ennemis et les projectiles du canon
     for missile in missiles:
