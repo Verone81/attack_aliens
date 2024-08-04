@@ -46,17 +46,23 @@ else:
 fenetre = pygame.display.set_mode((fenetre_largeur, fenetre_hauteur))
 pygame.display.set_caption("Attack d'Aliens")
 
+
+#  Initialisation du son
 son_bouton_a = pygame.mixer.Sound("audio/click.mp3")
 son_tire = pygame.mixer.Sound("audio/tire.mp3")
 son_explosion = pygame.mixer.Sound("audio/explosion.mp3")
 son_musique = pygame.mixer.music.load('audio/musique.mp3')
 son_game_over = pygame.mixer.Sound("audio/game-over.mp3")
 son_level = pygame.mixer.Sound("audio/level_suivant.mp3")
+son_gagner = pygame.mixer.Sound("audio/gagner.mp3")
+
 pygame.mixer.music.play(-1)  # -1 pour jouer en boucle
 
 canal_tir = pygame.mixer.Channel(0)  # Canal 0 pour le son de tir
 canal_explosion = pygame.mixer.Channel(1)  # Canal 1 pour le son d'explosion
-canal_game_over = pygame.mixer.Channel(2)
+canal_game_over = pygame.mixer.Channel(2) # Canal 3 pour le son de game over
+canal_gagner = pygame.mixer.Channel(2) # Canal 3 pour le son de game over
+
 
 # Afficher l'écran de départ et attendre le début du jeu
 attendre_commencer(fenetre, fenetre_largeur, fenetre_hauteur, son_bouton_a, manette)
@@ -95,6 +101,7 @@ while True:
                 projectiles.append(projectile)
         if boutons[1]: # bouton B
             print("c'est le bouton 1")
+
     # Remplir l'écran de noir
     fenetre.fill(noir)
 
@@ -137,19 +144,20 @@ while True:
                 canal_game_over.play(son_game_over)
                 afficher_game_over(fenetre, fenetre_largeur, fenetre_hauteur, score)  # Afficher l'écran de game over
 
+    # Determiner le niveau
     if score >= 10 and score < 20:
         niveau_missile = 2
     elif score >= 20 and score < 30:
         niveau_missile = 3
     elif score >= 30:
+        pygame.mixer.music.stop()
+        canal_gagner.play(son_gagner)
         gagner(fenetre, score, fenetre_largeur, fenetre_hauteur)
 
+    # Si le niveau augmente jouer un son une fois
     if niveau_missile != niveau_avant:
         son_level.play(maxtime=1000)
         niveau_avant += 1
-
-
-    
 
     # Dessiner les missiles ennemis et les projectiles du canon
     for missile in missiles:
