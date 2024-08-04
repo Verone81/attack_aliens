@@ -54,7 +54,7 @@ def afficher_score(fenetre, score):
         score (int): Le score actuel du joueur.
     """
     blanc = (255, 255, 255)
-    police = pygame.font.Font(None, 36)
+    police = pygame.font.Font("polices\Kanit-Regular.ttf", 36)
     texte = police.render(f'Score: {score}', True, blanc)
     fenetre.blit(texte, (10, 50))
 
@@ -72,8 +72,8 @@ def afficher_game_over(fenetre, largeur_fenetre, hauteur_fenetre, point):
     blanc = (255, 255, 255)
     noir = (0, 0, 0)
     
-    police = pygame.font.Font(None, 74)
-    police2 = pygame.font.Font(None, 25)
+    police = pygame.font.Font("polices\BebasNeue-Regular.ttf", 74)
+    police2 = pygame.font.Font("polices\Kanit-Regular.ttf", 25)
 
     texte = police.render("GAME OVER", True, blanc)
     texte_2 = police2.render(f"Score final: {point} points", True, blanc)
