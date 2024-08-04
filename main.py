@@ -74,6 +74,10 @@ pygame.time.set_timer(GENERATE_MISSILE_EVENT, random.randint(1000, 2000))
 # Police pour afficher les essais restants
 police_essais = pygame.font.Font(None, 36)
 
+# Créer un objet Clock pour limiter le FPS
+clock = pygame.time.Clock()
+fps = 60  # Limiter à 60 images par seconde
+
 # Boucle principale
 while True:
     for event in pygame.event.get():
@@ -129,6 +133,7 @@ while True:
             missiles.remove(missile)
             if essais <= 0:
                 pygame.mixer.music.stop()
+                pygame.time.delay(1000)
                 canal_game_over.play(son_game_over)
                 afficher_game_over(fenetre, fenetre_largeur, fenetre_hauteur)  # Afficher l'écran de game over
     
@@ -141,6 +146,7 @@ while True:
             essais -= 1
             if essais <= 0:
                 pygame.mixer.music.stop()
+                pygame.time.delay(1000)
                 canal_game_over.play(son_game_over)
                 afficher_game_over(fenetre, fenetre_largeur, fenetre_hauteur, score)  # Afficher l'écran de game over
 
@@ -151,6 +157,7 @@ while True:
         niveau_missile = 3
     elif score >= 30:
         pygame.mixer.music.stop()
+        pygame.time.delay(1000)
         canal_gagner.play(son_gagner)
         gagner(fenetre, score, fenetre_largeur, fenetre_hauteur)
 
@@ -177,4 +184,7 @@ while True:
 
     # Mettre à jour l'affichage
     pygame.display.flip()
+    
+    # Limiter la vitesse du jeu à 60 FPS
+    clock.tick(fps)
 0

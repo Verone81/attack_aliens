@@ -104,7 +104,7 @@ class Canon:
         """
         Pivote le canon vers la gauche.
         """
-        self.angle += 0.3
+        self.angle += 1
         if self.angle >= 360:
             self.angle -= 360
 
@@ -112,7 +112,7 @@ class Canon:
         """
         Pivote le canon vers la droite.
         """
-        self.angle -= 0.3
+        self.angle -= 1
         if self.angle < 0:
             self.angle += 360
 

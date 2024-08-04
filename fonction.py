@@ -118,7 +118,7 @@ def generer_missile(largeur_fenetre, niveau):
     x = random.randint(0, largeur_fenetre)
     y = 0
     vitesse_x = 0
-    vitesse_y = 0.5  # Ajuster la vitesse 
+    vitesse_y = 2  # Ajuster la vitesse 
     return Missile(x, y, vitesse_x, vitesse_y, niveau)
 
 
