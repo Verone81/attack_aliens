@@ -1,6 +1,8 @@
 import pygame
 import math
 
+import pygame
+
 class Missile:
     def __init__(self, x, y, vitesse_x, vitesse_y, niveau):
         """
@@ -19,28 +21,38 @@ class Missile:
         self.vitesse_y = vitesse_y
         self.trail = []
 
-        # Charger l'image du missile en fonction du niveau
+        # Charger les images du missile en fonction du niveau
         if niveau == 1:
-            self.image = pygame.image.load('images/missile.png')
+            self.images = [pygame.image.load('images/missile.png'), pygame.image.load('images/missile_2.png')]
         elif niveau == 2:
-            self.image = pygame.image.load('images/missile_niveau_2.png')
+            self.images = [pygame.image.load('images/missile_niveau_2.png'), pygame.image.load('images/missile_niveau_2_2.png')]
         elif niveau == 3:
-            self.image = pygame.image.load('images/missile_niveau_3.png')
+            self.images = [pygame.image.load('images\missile_niveau_3.png'), pygame.image.load('images\missile_niveau_3_2.png')]
         else:
             raise ValueError("Niveau de missile invalide")
 
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
+        self.current_frame = 0
+        self.frame_rate = 10  # Nombre de frames par seconde
+        self.frame_count = 0
+
+        self.width = self.images[0].get_width()
+        self.height = self.images[0].get_height()
 
     def update(self):
         """
-        Met à jour la position du missile.
+        Met à jour la position du missile et l'animation.
         """
         self.x += self.vitesse_x
         self.y += self.vitesse_y
         self.trail.append((self.x, self.y))
         if len(self.trail) > 1000:
             self.trail.pop(0)
+
+        # Gestion de l'animation
+        self.frame_count += 1
+        if self.frame_count >= self.frame_rate:
+            self.current_frame = (self.current_frame + 1) % len(self.images)
+            self.frame_count = 0
 
     def draw(self, screen):
         """
@@ -49,7 +61,7 @@ class Missile:
         Args:
             screen (pygame.Surface): Surface de l'écran où dessiner le missile.
         """
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.images[self.current_frame], (self.x, self.y))
 
     def is_out_of_bounds(self, hauteur_fenetre):
         """
@@ -78,6 +90,7 @@ class Missile:
                 pygame.Rect(other.x, other.y, other.width, other.height)
             )
         return False
+
 
 class Canon:
     def __init__(self, largeur_fenetre, hauteur_fenetre):
