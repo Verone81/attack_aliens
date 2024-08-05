@@ -18,7 +18,7 @@ def attendre_commencer(fenetre, largeur_fenetre, hauteur_fenetre, son, manette=N
     blanc = (255, 255, 255)
     noir = (0, 0, 0)
     police = pygame.font.Font(None, 74)
-    texte = police.render("Appuyez sur A pour commencer", True, blanc)
+    texte = police.render("Appuyez sur B pour commencer", True, blanc)
     rect_texte = texte.get_rect(center=(largeur_fenetre // 2, hauteur_fenetre // 2))
     
     attendre = True
@@ -33,7 +33,7 @@ def attendre_commencer(fenetre, largeur_fenetre, hauteur_fenetre, son, manette=N
         if manette:
             manette.init()  # Assure que la manette est initialisée
             boutons = [manette.get_button(i) for i in range(manette.get_numbuttons())]
-            if boutons[0]:  # Bouton A
+            if boutons[1]:  # Bouton B
                 son.play()
                 attendre = False
 

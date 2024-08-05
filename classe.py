@@ -1,8 +1,6 @@
 import pygame
 import math
 
-import pygame
-
 class Missile:
     def __init__(self, x, y, vitesse_x, vitesse_y, niveau):
         """
