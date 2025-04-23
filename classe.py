@@ -25,7 +25,7 @@ class Missile:
         elif niveau == 2:
             self.images = [pygame.image.load('images/missile_niveau_2.png'), pygame.image.load('images/missile_niveau_2_2.png')]
         elif niveau == 3:
-            self.images = [pygame.image.load('images\missile_niveau_3.png'), pygame.image.load('images\missile_niveau_3_2.png')]
+            self.images = [pygame.image.load('images/missile_niveau_3.png'), pygame.image.load('images/missile_niveau_3_2.png')]
         else:
             raise ValueError("Niveau de missile invalide")
 

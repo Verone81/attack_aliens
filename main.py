@@ -74,7 +74,7 @@ GENERATE_MISSILE_EVENT = pygame.USEREVENT + 1
 pygame.time.set_timer(GENERATE_MISSILE_EVENT, random.randint(1000, 2000))
 
 # Police pour afficher les essais restants
-police_essais = pygame.font.Font("polices\Kanit-Regular.ttf", 36)
+police_essais = pygame.font.Font("polices/Kanit_Regular.ttf", 36)
 
 # Créer un objet Clock pour limiter le FPS
 clock = pygame.time.Clock()
